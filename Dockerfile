@@ -24,3 +24,13 @@ USER runner
 
 # Verify gh installation
 RUN gh --version
+
+# Pre-install Claude Code
+ARG CLAUDE_CODE_VERSION=2.0.74
+RUN curl -fsSL https://claude.ai/install.sh | bash -s -- ${CLAUDE_CODE_VERSION}
+
+# Verify Claude Code installation
+RUN $HOME/.local/bin/claude --version
+
+# Add Claude Code to PATH for the runner
+ENV PATH="$PATH:/home/runner/.local/bin"
