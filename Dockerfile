@@ -25,9 +25,8 @@ USER runner
 # Verify gh installation
 RUN gh --version
 
-# Pre-install Claude Code
-ARG CLAUDE_CODE_VERSION=2.0.74
-RUN curl -fsSL https://claude.ai/install.sh | bash -s -- ${CLAUDE_CODE_VERSION}
+# Pre-install Claude Code (latest version)
+RUN curl -fsSL https://claude.ai/install.sh | bash
 
 # Verify Claude Code installation
 RUN $HOME/.local/bin/claude --version
