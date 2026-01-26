@@ -5,6 +5,9 @@ FROM ghcr.io/actions/actions-runner:latest
 # Switch to root user for installation
 USER root
 
+# Use bash for pipefail support
+SHELL ["/bin/bash", "-c"]
+
 # Install GitHub CLI (gh) and Docker CLI
 RUN set -eo pipefail && \
     apt-get update && \
