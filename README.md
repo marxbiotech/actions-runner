@@ -56,6 +56,14 @@ spec:
       containers:
         - name: runner
           image: ghcr.io/marxbiotech/actions-runner:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              while [ ! -f /certs/client/ca.pem ]; do
+                echo "Waiting for dind certificates..."
+                sleep 1
+              done
+              /home/runner/run.sh
           env:
             - name: DOCKER_HOST
               value: tcp://localhost:2376
@@ -71,9 +79,12 @@ spec:
           image: docker:dind
           securityContext:
             privileged: true
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: /certs
           volumeMounts:
             - name: docker-certs
-              mountPath: /certs/client
+              mountPath: /certs
       volumes:
         - name: docker-certs
           emptyDir: {}

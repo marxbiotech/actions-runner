@@ -6,7 +6,8 @@ FROM ghcr.io/actions/actions-runner:latest
 USER root
 
 # Install GitHub CLI (gh) and Docker CLI
-RUN apt-get update && \
+RUN set -eo pipefail && \
+    apt-get update && \
     apt-get install -y --no-install-recommends \
         curl \
         gpg \

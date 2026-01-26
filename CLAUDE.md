@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Custom GitHub Actions Runner Docker image extending `ghcr.io/actions/actions-runner:latest` with GitHub CLI (`gh`) pre-installed. Published to `ghcr.io/marxbiotech/actions-runner`.
+Custom GitHub Actions Runner Docker image extending `ghcr.io/actions/actions-runner:latest` with GitHub CLI (`gh`), Docker CLI, and Docker Buildx pre-installed. Published to `ghcr.io/marxbiotech/actions-runner`.
 
 ## Build Commands
 
@@ -28,7 +28,7 @@ The workflow (`.github/workflows/build-push.yml`) generates tags: `latest`, bran
 
 This is a minimal Docker-based project with no application code:
 
-- **Dockerfile**: Installs GitHub CLI from official sources with GPG verification, runs as non-root `runner` user
+- **Dockerfile**: Installs GitHub CLI, Docker CLI, and Buildx from official sources with GPG verification, runs as non-root `runner` user
 - **build-push.yml**: GitHub Actions workflow using Docker Buildx with GHA caching
 
 When adding new tools to the image, follow the existing pattern in Dockerfile:
