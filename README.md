@@ -19,6 +19,8 @@ This custom image includes the following additional tools beyond the base image:
 | Tool | Description | Version |
 |------|-------------|---------|
 | **GitHub CLI (`gh`)** | GitHub's official command line tool for interacting with GitHub API, managing PRs, issues, repos, and more | Latest |
+| **Docker CLI** | Docker command line client for building and managing containers | Latest |
+| **Docker Buildx** | Docker CLI plugin for extended build capabilities with BuildKit | Latest |
 
 ### GitHub CLI (`gh`)
 
@@ -36,6 +38,52 @@ steps:
     run: gh pr create --title "My PR" --body "Description"
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### Docker CLI
+
+The Docker CLI allows you to build and manage containers. When running on ARC (Actions Runner Controller), configure a DinD sidecar to provide the Docker daemon.
+
+**ARC RunnerSet with DinD Sidecar:**
+```yaml
+apiVersion: actions.github.com/v1alpha1
+kind: RunnerSet
+metadata:
+  name: my-runner
+spec:
+  template:
+    spec:
+      containers:
+        - name: runner
+          image: ghcr.io/marxbiotech/actions-runner:latest
+          env:
+            - name: DOCKER_HOST
+              value: tcp://localhost:2376
+            - name: DOCKER_TLS_VERIFY
+              value: "1"
+            - name: DOCKER_CERT_PATH
+              value: /certs/client
+          volumeMounts:
+            - name: docker-certs
+              mountPath: /certs/client
+              readOnly: true
+        - name: dind
+          image: docker:dind
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: docker-certs
+              mountPath: /certs/client
+      volumes:
+        - name: docker-certs
+          emptyDir: {}
+```
+
+**Usage Example in Workflow:**
+```yaml
+steps:
+  - name: Build Docker image
+    run: docker build -t my-app .
 ```
 
 ## Automated Builds
