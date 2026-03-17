@@ -1,6 +1,6 @@
 # Custom GitHub Actions Runner with additional tools
 # Based on the official GitHub Actions Runner image
-FROM ghcr.io/actions/actions-runner:latest
+FROM ghcr.io/actions/actions-runner:2.322.0
 
 # Switch to root user for installation
 USER root
