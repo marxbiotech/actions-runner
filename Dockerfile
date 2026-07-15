@@ -38,7 +38,7 @@ RUN set -eo pipefail && \
 USER runner
 
 # Verify installations and Node.js runtime dependency
-RUN ldconfig -p | grep -q 'libatomic.so.1' && \
+RUN /sbin/ldconfig -p | grep -q 'libatomic.so.1' && \
     gh --version && \
     docker --version && \
     docker buildx version
