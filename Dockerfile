@@ -14,7 +14,8 @@ RUN set -eo pipefail && \
     apt-get install -y --no-install-recommends \
         curl \
         gpg \
-        ca-certificates && \
+        ca-certificates \
+        libatomic1 && \
     mkdir -p -m 755 /etc/apt/keyrings && \
     # Add GitHub CLI repository
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor -o /etc/apt/keyrings/githubcli-archive-keyring.gpg && \
@@ -36,5 +37,8 @@ RUN set -eo pipefail && \
 # Switch back to runner user
 USER runner
 
-# Verify installations
-RUN gh --version && docker --version && docker buildx version
+# Verify installations and Node.js runtime dependency
+RUN /sbin/ldconfig -p | grep -q 'libatomic.so.1' && \
+    gh --version && \
+    docker --version && \
+    docker buildx version
