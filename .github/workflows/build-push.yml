@@ -36,8 +36,12 @@ jobs:
         uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          # Only main publishes :latest — a manual workflow_dispatch on any other
+          # branch must not repoint the tag consumers pull by default. Pinned to
+          # main explicitly rather than {{is_default_branch}}, which resolves to a
+          # different branch in this repository.
           tags: |
-            type=raw,value=latest
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=sha,prefix=
             type=ref,event=branch
 
