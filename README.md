@@ -1,6 +1,6 @@
 # Custom GitHub Actions Runner
 
-This repository contains a custom GitHub Actions Runner image based on the official `ghcr.io/actions/actions-runner:latest` with additional tools pre-installed.
+This repository contains a custom GitHub Actions Runner image based on the official `ghcr.io/actions/actions-runner` image with additional tools pre-installed.
 
 ## Image
 
@@ -10,7 +10,12 @@ ghcr.io/marxbiotech/actions-runner:latest
 
 ## Base Image
 
-- **Base**: `ghcr.io/actions/actions-runner:latest`
+- **Base**: `ghcr.io/actions/actions-runner:2.336.0` (pinned in the Dockerfile)
+
+The base image is pinned to an exact runner version and bumped via Dependabot. Keep it current:
+GitHub stops queueing jobs to a self-hosted runner that has not been updated within 30 days of a
+new `actions/runner` release, and ARC runners do not self-update — the image tag is the only way
+to upgrade them.
 
 ## Additional Tools
 
