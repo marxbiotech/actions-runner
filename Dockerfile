@@ -1,6 +1,6 @@
 # Custom GitHub Actions Runner with additional tools
 # Based on the official GitHub Actions Runner image
-FROM ghcr.io/actions/actions-runner:2.337.0
+FROM ghcr.io/actions/actions-runner:2.338.1
 
 # Switch to root user for installation
 USER root
@@ -37,8 +37,18 @@ RUN set -eo pipefail && \
 # Switch back to runner user
 USER runner
 
-# Verify installations and Node.js runtime dependency
+# Run every JavaScript action on the bundled Node 24 instead of Node 20. The
+# runner bundles both; Node 20 is EOL and gets no security fixes (2.338.1 still
+# ships 20.20.2). The runner reads this from its own environment as well as the
+# workflow's.
+ENV FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true
+
+# Verify installations and Node.js runtime dependency. The bundled Node 24 must
+# be at least 24.22.1 (October 2026 Node.js security release), so a base image
+# that bundles an older one fails the build.
 RUN /sbin/ldconfig -p | grep -q 'libatomic.so.1' && \
     gh --version && \
     docker --version && \
-    docker buildx version
+    docker buildx version && \
+    /home/runner/externals/node24/bin/node --version && \
+    /home/runner/externals/node24/bin/node -e 'const [a, b, c] = process.versions.node.split(".").map(Number); if (a !== 24 || b < 22 || (b === 22 && c < 1)) { console.error("bundled node24 " + process.version + " is older than 24.22.1"); process.exit(1); }'

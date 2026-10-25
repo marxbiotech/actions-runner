@@ -10,7 +10,7 @@ ghcr.io/marxbiotech/actions-runner:latest
 
 ## Base Image
 
-- **Base**: `ghcr.io/actions/actions-runner:2.336.0` (pinned in the Dockerfile)
+- **Base**: `ghcr.io/actions/actions-runner:2.338.1` (pinned in the Dockerfile; bundles Node 24.22.1, and `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true` keeps JavaScript actions off the EOL Node 20)
 
 The base image is pinned to an exact runner version and bumped via Dependabot. Keep it current:
 GitHub stops queueing jobs to a self-hosted runner that has not been updated within 30 days of a
