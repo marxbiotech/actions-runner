@@ -4,13 +4,15 @@ This repository contains a custom GitHub Actions Runner image based on the offic
 
 ## Image
 
+The image is published for Linux AMD64 and ARM64. The publishing workflow uses QEMU to build the ARM64 runner image.
+
 ```
 ghcr.io/marxbiotech/actions-runner:latest
 ```
 
 ## Base Image
 
-- **Base**: `ghcr.io/actions/actions-runner:2.338.1` (pinned in the Dockerfile; bundles Node 24.22.1, and `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true` keeps JavaScript actions off the EOL Node 20)
+- **Base**: `ghcr.io/actions/actions-runner:2.338.2` (pinned in the Dockerfile; bundles Node 24.22.1, and `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true` keeps JavaScript actions off the EOL Node 20)
 
 The base image is pinned to an exact runner version and bumped via Dependabot. Keep it current:
 GitHub stops queueing jobs to a self-hosted runner that has not been updated within 30 days of a
